@@ -1,0 +1,953 @@
+{
+	"info": {
+		"_postman_id": "6b984fd5-ce90-496b-859d-1466d3413df4",
+		"name": "Serasa",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19196108"
+	},
+	"item": [
+		{
+			"name": "LOGIN",
+			"item": [
+				{
+					"name": "200 - Login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);\r",
+									"pm.globals.set(\"AUTH\", response.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERASA}}/auth",
+							"host": [
+								"{{SERASA}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GET /bank",
+			"item": [
+				{
+					"name": "2XX",
+					"item": [
+						{
+							"name": "200 - Sucesso",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const Utils = eval(pm.globals.get('FUNCTIONS'));\r",
+											"const utils = new Utils(pm);\r",
+											"\r",
+											"utils.validateStatusCode(200);\r",
+											"utils.responseTimeIsLessThan(1000);\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SERASA}}/bank",
+									"host": [
+										"{{SERASA}}"
+									],
+									"path": [
+										"bank"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "200 - Filtro por Estado SC",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"const Utils = eval(pm.globals.get('FUNCTIONS'));\r",
+											"const utils = new Utils(pm);\r",
+											"\r",
+											"utils.validateStatusCode(200);\r",
+											"utils.responseTimeIsLessThan(1000);\r",
+											"utils.filterTestContais(jsonData, \"estadoAtuacao\", \"SC\") "
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SERASA}}/bank?estadoAtuacao=SC",
+									"host": [
+										"{{SERASA}}"
+									],
+									"path": [
+										"bank"
+									],
+									"query": [
+										{
+											"key": "estadoAtuacao",
+											"value": "SC"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "200 - Filtro por Estado SP",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"const Utils = eval(pm.globals.get('FUNCTIONS'));\r",
+											"const utils = new Utils(pm);\r",
+											"\r",
+											"utils.validateStatusCode(200);\r",
+											"utils.responseTimeIsLessThan(1000);\r",
+											"utils.filterTestContais(jsonData, \"estadoAtuacao\", \"SP\") "
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SERASA}}/bank?estadoAtuacao=SP",
+									"host": [
+										"{{SERASA}}"
+									],
+									"path": [
+										"bank"
+									],
+									"query": [
+										{
+											"key": "estadoAtuacao",
+											"value": "SP"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "4XX",
+					"item": [
+						{
+							"name": "400 - Tipagem Inválida",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const Utils = eval(pm.globals.get('FUNCTIONS'));\r",
+											"const utils = new Utils(pm);\r",
+											"\r",
+											"utils.validateStatusCode(400);\r",
+											"utils.responseTimeIsLessThan(1000);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SERASA}}/bank?estadoAtuacao=123",
+									"host": [
+										"{{SERASA}}"
+									],
+									"path": [
+										"bank"
+									],
+									"query": [
+										{
+											"key": "estadoAtuacao",
+											"value": "123"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "400 - Parametros em Branco",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const Utils = eval(pm.globals.get('FUNCTIONS'));\r",
+											"const utils = new Utils(pm);\r",
+											"\r",
+											"utils.validateStatusCode(400);\r",
+											"utils.responseTimeIsLessThan(1000);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SERASA}}/bank?estadoAtuacao=",
+									"host": [
+										"{{SERASA}}"
+									],
+									"path": [
+										"bank"
+									],
+									"query": [
+										{
+											"key": "estadoAtuacao",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "401 - Sem Autorização",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const Utils = eval(pm.globals.get('FUNCTIONS'));\r",
+											"const utils = new Utils(pm);\r",
+											"\r",
+											"utils.validateStatusCode(401);\r",
+											"utils.responseTimeIsLessThan(1000);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "123",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SERASA}}/bank?estadoAtuacao=SP",
+									"host": [
+										"{{SERASA}}"
+									],
+									"path": [
+										"bank"
+									],
+									"query": [
+										{
+											"key": "estadoAtuacao",
+											"value": "SP"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "PUT /bank",
+			"item": [
+				{
+					"name": "2XX",
+					"item": [
+						{
+							"name": "200 - Sucesso Atualização Parcial",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"jsonData.shift()\r",
+											"const Utils = eval(pm.globals.get('FUNCTIONS'));\r",
+											"const utils = new Utils(pm);\r",
+											"\r",
+											"utils.validateStatusCode(200);\r",
+											"utils.responseTimeIsLessThan(1000);\r",
+											"utils.filterTestContais(jsonData, \"estadoAtuacao\", \"SP\")\r",
+											"utils.filterTestContais(jsonData, \"juros\", \"15,00%\") "
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"estadoAtuacao\": \"SP\",\r\n    \"juros\": \"15,00\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SERASA}}/bank/:id",
+									"host": [
+										"{{SERASA}}"
+									],
+									"path": [
+										"bank",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "200 - Sucesso Atualização Completa",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"jsonData.shift()\r",
+											"const Utils = eval(pm.globals.get('FUNCTIONS'));\r",
+											"const utils = new Utils(pm);\r",
+											"\r",
+											"utils.validateStatusCode(200);\r",
+											"utils.responseTimeIsLessThan(1000);\r",
+											"utils.filterTestContais(jsonData, \"estadoAtuacao\", \"MG\")\r",
+											"utils.filterTestContais(jsonData, \"juros\", \"25,00%\") "
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"banco\": \"Banco Banespa\",\r\n    \"estadoAtuacao\": \"MG\",\r\n    \"juros\": \"25,00\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SERASA}}/bank/:id",
+									"host": [
+										"{{SERASA}}"
+									],
+									"path": [
+										"bank",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "4XX",
+					"item": [
+						{
+							"name": "400 - Tipagem Inválida",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const Utils = eval(pm.globals.get('FUNCTIONS'));\r",
+											"const utils = new Utils(pm);\r",
+											"\r",
+											"utils.validateStatusCode(400);\r",
+											"utils.responseTimeIsLessThan(1000);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"banco\": 123,\r\n    \"estadoAtuacao\": 123,\r\n    \"juros\": 25\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SERASA}}/bank/:id",
+									"host": [
+										"{{SERASA}}"
+									],
+									"path": [
+										"bank",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "400 - Parametros em Branco",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const Utils = eval(pm.globals.get('FUNCTIONS'));\r",
+											"const utils = new Utils(pm);\r",
+											"\r",
+											"utils.validateStatusCode(400);\r",
+											"utils.responseTimeIsLessThan(1000);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"banco\": \"\",\r\n    \"estadoAtuacao\": \"\",\r\n    \"juros\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SERASA}}/bank/:id",
+									"host": [
+										"{{SERASA}}"
+									],
+									"path": [
+										"bank",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "401 - Sem Autorização",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const Utils = eval(pm.globals.get('FUNCTIONS'));\r",
+											"const utils = new Utils(pm);\r",
+											"\r",
+											"utils.validateStatusCode(401);\r",
+											"utils.responseTimeIsLessThan(1000);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "123",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"banco\": \"Banco Banespa\",\r\n    \"estadoAtuacao\": \"MG\",\r\n    \"juros\": \"25,00\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SERASA}}/bank/:id",
+									"host": [
+										"{{SERASA}}"
+									],
+									"path": [
+										"bank",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "404 - ID Inesistente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const Utils = eval(pm.globals.get('FUNCTIONS'));\r",
+											"const utils = new Utils(pm);\r",
+											"\r",
+											"utils.validateStatusCode(404);\r",
+											"utils.responseTimeIsLessThan(1000);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"estadoAtuacao\": \"SP\",\r\n    \"juros\": \"15,00\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SERASA}}/bank/:id",
+									"host": [
+										"{{SERASA}}"
+									],
+									"path": [
+										"bank",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "7823"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "POST /bank",
+			"item": [
+				{
+					"name": "2XX",
+					"item": [
+						{
+							"name": "201 - Sucesso",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"jsonData.pop()\r",
+											"const Utils = eval(pm.globals.get('FUNCTIONS'));\r",
+											"const utils = new Utils(pm);\r",
+											"\r",
+											"utils.validateStatusCode(201);\r",
+											"utils.responseTimeIsLessThan(1000);\r",
+											"utils.filterTestContais(jsonData, \"banco\", \"Banco Sicred\") \r",
+											"utils.filterTestContais(jsonData, \"estadoAtuacao\", \"RS\") \r",
+											"utils.filterTestContais(jsonData, \"juros\", \"12,15%\") \r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"banco\": \"Banco Sicred\",\r\n    \"estadoAtuacao\": \"RS\",\r\n    \"juros\": \"12,15\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SERASA}}/bank",
+									"host": [
+										"{{SERASA}}"
+									],
+									"path": [
+										"bank"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "4XX",
+					"item": [
+						{
+							"name": "400 - Tipagem Inválida",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const Utils = eval(pm.globals.get('FUNCTIONS'));\r",
+											"const utils = new Utils(pm);\r",
+											"\r",
+											"utils.validateStatusCode(400);\r",
+											"utils.responseTimeIsLessThan(1000);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"banco\": 123,\r\n    \"estadoAtuacao\": 123,\r\n    \"juros\": 25\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SERASA}}/bank",
+									"host": [
+										"{{SERASA}}"
+									],
+									"path": [
+										"bank"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "400 - Parametros em Branco",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const Utils = eval(pm.globals.get('FUNCTIONS'));\r",
+											"const utils = new Utils(pm);\r",
+											"\r",
+											"utils.validateStatusCode(400);\r",
+											"utils.responseTimeIsLessThan(1000);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"banco\": \"\",\r\n    \"estadoAtuacao\": \"\",\r\n    \"juros\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SERASA}}/bank/",
+									"host": [
+										"{{SERASA}}"
+									],
+									"path": [
+										"bank",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "401 - Sem Autorização",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const Utils = eval(pm.globals.get('FUNCTIONS'));\r",
+											"const utils = new Utils(pm);\r",
+											"\r",
+											"utils.validateStatusCode(401);\r",
+											"utils.responseTimeIsLessThan(1000);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "123",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"banco\": \"Banco Banespa\",\r\n    \"estadoAtuacao\": \"MG\",\r\n    \"juros\": \"25,00\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SERASA}}/bank",
+									"host": [
+										"{{SERASA}}"
+									],
+									"path": [
+										"bank"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

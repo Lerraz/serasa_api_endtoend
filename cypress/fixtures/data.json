@@ -1,0 +1,23 @@
+[
+  {
+    "integerValue": 1000,
+    "stringValue": "R$ 1.000,00",
+    "integerMonths": 0,
+    "stringMonths": "6",
+    "installmentValue": "271,27"
+  },
+  {
+    "integerValue": 4000,
+    "stringValue": "R$ 4.000,00",
+    "integerMonths": 12,
+    "stringMonths": "12",
+    "installmentValue": "478,49"
+  },
+  {
+    "integerValue": 8000,
+    "stringValue": "R$ 8.000,00",
+    "integerMonths": 24,
+    "stringMonths": "24",
+    "installmentValue": "517,19"
+  }
+]

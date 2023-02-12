@@ -1,0 +1,27 @@
+{
+	"id": "cac3aa5b-17f1-410a-88af-5f606aacd233",
+	"values": [
+		{
+			"key": "SERASA",
+			"value": "https://8dac9f4e-fcb2-4e8f-857a-e4ed3497a0d8.mock.pstmn.io",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "AUTH",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJkZXNhZmlvIjoic2VyYXNhIn0.oOMv4kf9hKMtuatZEZJyESVu9Z7h6hGBwrZRJ-9HkCU",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "FUNCTIONS",
+			"value": "(class Utils {\n    constructor(pm,) {\n        this.pm = pm;\n    }\n    \n    validateStatusCode(\n        statusCode,\n    ) {\n        this.pm.test(`Status code is ${statusCode\n            }`, () => {\n                this.pm.response.to.have.status(statusCode);\n            });\n    }\n    responseTimeIsLessThan(\n        time,\n    ) {\n        this.pm.test(`Response time is less than ${time\n            } ms`, () => {\n                this.pm.expect(this.pm.response.responseTime).to.be.below(time);\n            });\n    }\n    schemaIsValid(\n        schema, data,\n    ) {\n        this.pm.test(\"Schema is valid\", () => {\n            this.pm.data.to.be.json;\n            this.pm.data.to.have.jsonSchema(schema);\n        });\n    }\n        filterTestContais(jsonData, Field, Data) {\n        const fields = Field.split('.');\n        this.pm.test(`All Results of Field '${Field}' contains '${Data}'`, () => {\n            for (const data of jsonData) {\n                let reference = data\n                for (const field of fields) {\n                    reference = reference[field];\n                }\n                this.pm.expect(reference).to.contain(Data);\n            }\n        });\n    }\n})",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"name": "Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2023-02-11T20:54:54.118Z",
+	"_postman_exported_using": "Postman/10.9.3"
+}

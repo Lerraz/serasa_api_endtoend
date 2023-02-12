@@ -1,0 +1,13 @@
+{
+    "dependencies": {
+        "newman": "^5.3.2",
+        "newman-reporter-htmlextra": "^1.22.11"
+    },
+    "scripts": {
+        "newmanextra": "newman run newman/Serasa.json --globals newman/Globals.json --reporter-htmlextra-export reports -r htmlextra"
+    },
+    "devDependencies": {
+        "cypress": "^12.5.1",
+        "cypress-mochawesome-reporter": "^3.3.0"
+    }
+}

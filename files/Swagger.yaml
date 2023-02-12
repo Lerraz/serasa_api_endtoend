@@ -1,0 +1,226 @@
+openapi: 3.0.0
+servers:
+  - description: Swagger API Serassa - Bank
+    url: https://8dac9f4e-fcb2-4e8f-857a-e4ed3497a0d8.mock.pstmn.io
+info:
+  version: "1.0.0"
+  title: Serasa - Bank
+  description: API das rotas de manutenções de banco
+paths:
+  /bank:
+    get:
+      tags:
+        - Bank
+      summary: Listagem dos Bancos
+      description: |
+      parameters:
+        - $ref: "#/components/parameters/estadoAtuacao"
+      responses:
+        '200':
+          description: Array de objetos retornado com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                  - id
+                  - banco
+                  - estadoAtuacao
+                  - juros
+                  properties:
+                    id:
+                      $ref: '#/components/schemas/id'
+                    banco:
+                      $ref: '#/components/schemas/banco'
+                    estadoAtuacao:
+                      $ref: '#/components/schemas/estadoAtuacao'
+                    juros:
+                      $ref: '#/components/schemas/juros'
+        '400':
+          description: Erro em parametrôs da requisição.
+        '401':
+          description: Erro com chave de autenticação inválida.
+    post:
+      tags:
+        - Bank
+      summary: Cadastrar Banco
+      description: |
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                type: object
+                required:
+                - banco
+                - estadoAtuacao
+                - juros
+                properties:
+                  banco:
+                    $ref: '#/components/schemas/banco'
+                  estadoAtuacao:
+                    $ref: '#/components/schemas/estadoAtuacao'
+                  juros:
+                    $ref: '#/components/schemas/juros'
+      responses:
+        '201':
+          description: Banco cadastrado.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - id
+                - banco
+                - estadoAtuacao
+                - juros
+                properties:
+                  id:
+                    $ref: '#/components/schemas/id'
+                  banco:
+                    $ref: '#/components/schemas/banco'
+                  estadoAtuacao:
+                    $ref: '#/components/schemas/estadoAtuacao'
+                  juros:
+                    $ref: '#/components/schemas/juros'
+        '400':
+          description: Erro em parametrôs da requisição.
+        '401':
+          description: Erro com chave de autenticação inválida.
+  /bank/{id} - SUGESTÃO:
+    get:
+      tags:
+        - Bank
+      summary: Listagem dos Bancos por ID
+      description: |
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        '200':
+          description: Objeto retornado com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - id
+                - banco
+                - estadoAtuacao
+                - juros
+                properties:
+                  id:
+                    $ref: '#/components/schemas/id'
+                  banco:
+                    $ref: '#/components/schemas/banco'
+                  estadoAtuacao:
+                    $ref: '#/components/schemas/estadoAtuacao'
+                  juros:
+                    $ref: '#/components/schemas/juros'
+        '400':
+          description: Erro em parametrôs da requisição.
+        '401':
+          description: Erro com chave de autenticação.
+        '404':
+          description: Erro de ID inválido.
+  /bank/{id}:
+    put:
+      tags:
+      - Bank
+      summary: Atualiza o Banco
+      description: |
+      parameters:
+        - $ref : "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+                type: object
+                properties:
+                  banco:
+                    $ref: '#/components/schemas/banco'
+                  estadoAtuacao:
+                    $ref: '#/components/schemas/estadoAtuacao'
+                  juros:
+                    $ref: '#/components/schemas/juros'
+      responses:
+        '200':
+          description: Banco Atualizado.
+          content:
+            application/json:
+              schema:
+                  type: object
+                  required:
+                  - id
+                  - banco
+                  - estadoAtuacao
+                  - juros
+                  properties:
+                    id:
+                      $ref: '#/components/schemas/id'
+                    banco:
+                      $ref: '#/components/schemas/banco'
+                    estadoAtuacao:
+                      $ref: '#/components/schemas/estadoAtuacao'
+                    juros:
+                      $ref: '#/components/schemas/juros'
+        '400':
+          description: Erro em parametrôs da requisição.
+        '401':
+          description: Erro com chave de autenticação.
+        '404':
+          description: Erro de ID inválido.
+security:
+  - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    id:
+      in: path
+      name: id
+      required: true
+      schema:
+        $ref: '#/components/schemas/id'
+    banco:
+      in: query
+      name: banco
+      required: false
+      schema:
+        $ref: '#/components/schemas/banco'
+    estadoAtuacao:
+      in: query
+      name: estadoAtuacao
+      required: false
+      schema:
+        $ref: '#/components/schemas/estadoAtuacao'
+    juros:
+      in: query
+      name: juros
+      required: false
+      schema:
+        $ref: '#/components/schemas/juros'
+  schemas:
+    id:
+      type: integer
+      format: int32
+      description: ID do Banco.
+      example: 1
+    banco:
+      type: string
+      description: Nome do Banco.
+      example: "Banco do Brasil"
+    estadoAtuacao:
+      type: string
+      description: Estado de atuação do Banco.
+      example: "SC"
+    juros:
+      type: string
+      description: Juros por instituição.
+      example: "11,25%"
